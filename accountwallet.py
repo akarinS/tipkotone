@@ -14,8 +14,6 @@ from config import MINCONF
 def sql_decorator(sql_func: Callable) -> Callable:
     def new_sql_func(*args: Any, **kwargs: Any) -> Any:
         with sqlite3.connect(DBPATH, timeout = 60, isolation_level = 'EXCLUSIVE') as conn:
-            r = None
-
             for i in range(5):
                 try:
                     cursor = conn.cursor()
@@ -34,7 +32,7 @@ def sql_decorator(sql_func: Callable) -> Callable:
                     conn.commit()
                     return r
 
-                raise e
+            raise e
 
     return new_sql_func
 
