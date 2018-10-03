@@ -69,7 +69,6 @@ def get_account_balance(cursor: sqlite3.Cursor, account: str) -> Tuple[Decimal, 
     cursor.execute('select value from notified_tx where account == ? and confirmed == 0 and time > ?', (account, int(time.time()) - 60 * MINCONF * 10))
     values = [Decimal(str(r[0])) for r in cursor.fetchall()]
 
-
     confirming_balance = Decimal('0.0')
 
     for value in values:
@@ -87,7 +86,7 @@ def main() -> None:
         cursor.execute('select * from notified_tx where txid == ?', (txid,))
 
         if cursor.fetchone() is not None:
-            print('    alreasy set')
+            print('    already set')
             return
 
         try:
