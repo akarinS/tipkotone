@@ -45,7 +45,7 @@ def init_db(cursor: sqlite3.Cursor) -> None:
 
 @sql_decorator
 def get_new_account_address(cursor: sqlite3.Cursor, account: str) -> str:
-    address = coinrpc.call('getnewaddress')
+    address = rpc.call('getnewaddress')
 
     cursor.execute('insert or ignore into account_wallet(account) values(?)', (account,))
     cursor.execute('insert into account_address(account, address) values(?, ?)', (account, address))
@@ -90,7 +90,7 @@ def main() -> None:
             return
 
         try:
-            result = coinrpc.call('decoderawtransaction', coinrpc.call('getrawtransaction', txid))
+            result = rpc.call('decoderawtransaction', rpc.call('getrawtransaction', txid))
 
         except:
             result = None
@@ -141,7 +141,7 @@ def main() -> None:
 
         for txid in txids:
             print(f'  txid : {txid}')
-            result = coinrpc.call('gettransaction', txid)
+            result = rpc.call('gettransaction', txid)
 
             if result is None:
                 print('    result is None')
@@ -201,7 +201,7 @@ def main() -> None:
 if not os.path.exists(DBPATH):
     init_db()
 
-coinrpc = CoinRPC(RPCUSER, RPCPASSWORD, RPCPORT)
+rpc = CoinRPC(RPCUSER, RPCPASSWORD, RPCPORT)
 
 
 if __name__ == '__main__':
