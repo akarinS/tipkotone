@@ -89,6 +89,11 @@ def execute(text: str, user_id: str, screen_name: str, name: str, from_tweet: bo
 
             return get_message(text, screen_name) if from_tweet else get_message(text)
 
+        if to_screen_name == screen_name:
+            text = '自身には投げ銭できません・・・'
+
+            return get_message(text, screen_name) if from_tweet else get_message(text)
+
         if to_screen_name == BOTSCREENNAME:
             to_account = 'FREE'
 

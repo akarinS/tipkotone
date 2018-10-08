@@ -96,6 +96,9 @@ def move(cursor: sqlite3.Cursor, from_account: str, to_account: str, str_amount:
     cursor.execute('insert or ignore into account_wallet(account) values(?)', (from_account,))
     cursor.execute('insert or ignore into account_wallet(account) values(?)', (to_account,))
 
+    if from_account == to_account:
+        return 'self'
+
     if not is_amount(str_amount):
         return 'wrong'
 
