@@ -2,7 +2,6 @@ from typing import Dict, Optional
 import accountwallet as aw
 import re
 import twitter
-import easteregg
 from config import BOTSCREENNAME
 import random
 import string
@@ -28,27 +27,14 @@ def get_command(text: str) -> Dict:
         if re.match('^(deposit|入金.*)$', words[0].lower()):
             return {'method': 'deposit'}
 
-        if re.match('^(address|アドレス)$', words[0].lower()):
-            return {'method': 'address', 'params': words[1:]}
-
         if re.match('^(withdraw|出金)$', words[0].lower()):
             return {'method': 'withdraw', 'params': words[1:]}
-
-        if re.match('^(withdrawall|全額出金)$', words[0].lower()):
-            return {'method': 'withdrawall', 'params': words[1:]}
-
-        if re.match('^(faucet|フォーセット|蛇口)$', words[0].lower()):
-            return {'method': 'faucet'}
 
         if re.match('^(help|ヘルプ)$', words[0].lower()):
             return {'method': 'help'}
 
         if re.match('^(followme|フォローミー|フォローして)', ''.join([word.lower() for word in words])):
             return {'method': 'follow'}
-
-        command = easteregg.get_command(words)
-        if command['method'] is not None:
-            return command
 
     return {'method': None}
 
@@ -86,7 +72,7 @@ def execute(text: str, user_id: str, screen_name: str, name: str, from_tweet: bo
 
     if command['method'] == 'tip':
         if len(command['params']) < 2:
-            text = 'tipkotoneの使い方をご確認ください！'
+            text = 'tipkotoneの使い方をご確認ください！ https://github.com/akarinS/tipkotone/blob/master/README.md'
 
             return get_message(text, screen_name) if from_tweet else get_message(text)
 
@@ -94,7 +80,7 @@ def execute(text: str, user_id: str, screen_name: str, name: str, from_tweet: bo
             to_screen_name = command['params'][0][1:]
             str_amount = command['params'][1]
 
-        elif re.match('^@', command['params'][0]):
+        elif re.match('^@', command['params'][1]):
             to_screen_name = command['params'][1][1:]
             str_amount = command['params'][0]
 
@@ -139,7 +125,7 @@ def execute(text: str, user_id: str, screen_name: str, name: str, from_tweet: bo
         amount = Decimal_to_str(result)
 
         if to_screen_name == BOTSCREENNAME:
-            text = f'{name}さんから {amount}KOTO 寄付していただきました！ ありがとうございます！'
+            text = f'{amount}KOTO 寄付していただきありがとうございます！'
 
             return get_message(text, screen_name) if from_tweet else get_message(text)
 
@@ -170,7 +156,7 @@ def execute(text: str, user_id: str, screen_name: str, name: str, from_tweet: bo
 
     if command['method'] == 'withdraw':
         if len(command['params']) < 2:
-            text = 'tipkotoneの使い方をご確認ください！'
+            text = 'tipkotoneの使い方をご確認ください！ https://github.com/akarinS/tipkotone/blob/master/README.md'
 
             return get_message(text, screen_name) if from_tweet else get_message(text)
 
@@ -215,7 +201,7 @@ def execute(text: str, user_id: str, screen_name: str, name: str, from_tweet: bo
         return get_message(text, screen_name) if from_tweet else get_message(text)
 
     if command['method'] == 'help':
-        text = 'tipkotoneの使い方はこちらです！'
+        text = 'tipkotoneの使い方はこちらです！ https://github.com/akarinS/tipkotone/blob/master/README.md'
 
         return get_message(text, screen_name) if from_tweet else get_message(text)
 

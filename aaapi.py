@@ -1,5 +1,5 @@
 from flask import Flask, request
-from config import CONSUMERKEY, CONSUMERSECRET, ACCESSTOKEN, ACCESSTOKENSECRET
+from config import CONSUMERSECRET
 import base64
 import hashlib
 import hmac
