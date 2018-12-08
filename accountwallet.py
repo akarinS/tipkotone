@@ -233,7 +233,7 @@ def main() -> None:
         params = {}
 
         for address in addresses:
-            cursor.execute('select amount from withdrawal_req where address == ?', (address,))
+            cursor.execute('select amount from withdrawal_req where address == ? and completed == 0', (address,))
             req_amounts = [Decimal(str(r[0])) for r in cursor.fetchall()]
 
             amount = Decimal('0.0')
